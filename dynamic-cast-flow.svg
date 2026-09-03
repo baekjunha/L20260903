@@ -1,0 +1,125 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">C++ dynamic_cast 성공과 실패 흐름</title>
+  <desc id="desc">부모 포인터가 실제로 가리키는 객체의 타입을 검사하여 유진영 포인터를 얻거나 nullptr을 반환하는 과정을 설명한다.</desc>
+  <defs>
+    <linearGradient id="header" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#172554"/>
+      <stop offset="1" stop-color="#312e81"/>
+    </linearGradient>
+    <linearGradient id="success" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#dcfce7"/>
+      <stop offset="1" stop-color="#bbf7d0"/>
+    </linearGradient>
+    <linearGradient id="failure" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff1f2"/>
+      <stop offset="1" stop-color="#ffe4e6"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="6" stdDeviation="8" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#475569"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#15803d"/>
+    </marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#be123c"/>
+    </marker>
+    <style>
+      text { font-family: "Noto Sans KR", "Malgun Gothic", "Segoe UI", sans-serif; fill: #0f172a; }
+      .h1 { font-size: 38px; font-weight: 800; fill: white; }
+      .sub { font-size: 19px; font-weight: 500; fill: #c7d2fe; }
+      .step { font-size: 18px; font-weight: 800; fill: white; }
+      .title { font-size: 25px; font-weight: 800; }
+      .body { font-size: 18px; font-weight: 500; }
+      .small { font-size: 16px; font-weight: 500; fill: #475569; }
+      .code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 18px; font-weight: 700; }
+      .chip { font-size: 15px; font-weight: 800; }
+    </style>
+  </defs>
+
+  <rect width="1400" height="900" rx="28" fill="#f8fafc"/>
+  <rect x="0" y="0" width="1400" height="132" rx="28" fill="url(#header)"/>
+  <rect x="0" y="104" width="1400" height="28" fill="url(#header)"/>
+  <text x="60" y="58" class="h1">dynamic_cast는 객체를 바꾸는 기능이 아니다</text>
+  <text x="60" y="96" class="sub">실제 객체 타입을 확인하고, 맞으면 같은 객체를 자식 포인터로 바라본다</text>
+
+  <!-- Step badges -->
+  <circle cx="100" cy="180" r="28" fill="#4f46e5"/>
+  <text x="100" y="187" text-anchor="middle" class="step">1</text>
+  <circle cx="570" cy="180" r="28" fill="#4f46e5"/>
+  <text x="570" y="187" text-anchor="middle" class="step">2</text>
+  <circle cx="1045" cy="180" r="28" fill="#4f46e5"/>d>
+  <text x="1045" y="187" text-anchor="middle" class="step">3</text>
+
+  <!-- Step 1 -->
+  <g filter="url(#shadow)">
+    <rect x="55" y="225" width="420" height="430" rx="22" fill="white" stroke="#cbd5e1" stroke-width="2"/>
+  </g>
+  <text x="85" y="270" class="title">부모 포인터로 순회</text>
+  <rect x="85" y="300" width="360" height="82" rx="14" fill="#eef2ff" stroke="#818cf8" stroke-width="2"/>
+  <text x="105" y="332" class="small">스택의 지역 변수</text>
+  <text x="105" y="362" class="code">SuperParent* Person</text>
+
+  <line x1="265" y1="390" x2="265" y2="438" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+  <text x="285" y="420" class="small">주소 0x1000</text>
+
+  <rect x="85" y="450" width="360" height="164" rx="16" fill="#f1f5f9" stroke="#64748b" stroke-width="2"/>
+  <text x="105" y="482" class="small">힙의 실제 객체</text>
+  <rect x="105" y="500" width="320" height="48" rx="10" fill="#dbeafe"/>
+  <text x="125" y="531" class="body">SuperParent 영역 · Play()</text>
+  <rect x="105" y="554" width="320" height="42" rx="10" fill="#fde68a"/>
+  <text x="125" y="582" class="body">유진영 영역 · 나가()</text>
+  <text x="265" y="642" text-anchor="middle" class="chip" fill="#92400e">실제 타입 = 유진영</text>
+
+  <!-- Step 2 -->
+  <g filter="url(#shadow)">
+    <rect x="500" y="225" width="420" height="430" rx="22" fill="white" stroke="#cbd5e1" stroke-width="2"/>
+  </g>
+  <text x="530" y="270" class="title">실행 중 타입 검사</text>
+  <rect x="530" y="304" width="360" height="66" rx="13" fill="#111827"/>
+  <text x="710" y="345" text-anchor="middle" class="code" fill="#f8fafc">dynamic_cast&lt;유진영*&gt;(Person)</text>
+
+  <polygon points="710,410 855,500 710,590 565,500" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/>
+  <text x="710" y="480" text-anchor="middle" class="body">Person이 가리키는</text>
+  <text x="710" y="508" text-anchor="middle" class="body">실제 객체가</text>
+  <text x="710" y="536" text-anchor="middle" class="body" font-weight="800">유진영 계열인가?</text>
+  <text x="710" y="628" text-anchor="middle" class="small">RTTI로 상속 관계와 실제 타입 확인</text>
+
+  <line x1="475" y1="465" x2="548" y2="480" stroke="#475569" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <!-- Step 3 success/failure -->
+  <g filter="url(#shadow)">
+    <rect x="945" y="225" width="400" height="202" rx="22" fill="url(#success)" stroke="#22c55e" stroke-width="2"/>
+    <rect x="945" y="453" width="400" height="202" rx="22" fill="url(#failure)" stroke="#fb7185" stroke-width="2"/>
+  </g>
+
+  <rect x="975" y="252" width="78" height="32" rx="16" fill="#15803d"/>
+  <text x="1014" y="274" text-anchor="middle" class="chip" fill="white">성공</text>
+  <text x="975" y="320" class="code" fill="#166534">유진영* B = 0x1000</text>
+  <text x="975" y="352" class="body">Person과 B는 같은 객체 주소</text>
+  <text x="975" y="382" class="code" fill="#166534">if (B)  →  B-&gt;나가();</text>
+  <text x="975" y="410" class="small">자식 전용 기능 호출 가능</text>
+
+  <rect x="975" y="480" width="78" height="32" rx="16" fill="#be123c"/>
+  <text x="1014" y="502" text-anchor="middle" class="chip" fill="white">실패</text>
+  <text x="975" y="548" class="code" fill="#9f1239">유진영* B = nullptr</text>
+  <text x="975" y="580" class="body">실제 객체가 SuperParent·Girl</text>
+  <text x="975" y="610" class="code" fill="#9f1239">if (B)  →  실행하지 않음</text>
+  <text x="975" y="638" class="small">잘못된 자식 기능 호출 방지</text>
+
+  <path d="M 855 476 C 910 448, 910 335, 945 335" fill="none" stroke="#15803d" stroke-width="4" marker-end="url(#arrowGreen)"/>
+  <text x="883" y="413" class="chip" fill="#15803d">YES</text>
+  <path d="M 855 524 C 910 550, 910 560, 945 560" fill="none" stroke="#be123c" stroke-width="4" marker-end="url(#arrowRed)"/>
+  <text x="887" y="551" class="chip" fill="#be123c">NO</text>
+
+  <!-- Key takeaway -->
+  <rect x="55" y="705" width="1290" height="145" rx="22" fill="#0f172a"/>
+  <circle cx="100" cy="750" r="20" fill="#fbbf24"/>
+  <text x="100" y="757" text-anchor="middle" font-size="22" font-weight="900">!</text>
+  <text x="135" y="755" class="title" fill="white">핵심: 새 객체를 만들거나 메모리 내용을 변환하지 않는다</text>
+  <text x="135" y="795" class="body" fill="#cbd5e1">성공하면 동일한 주소를 자식 타입 포인터로 얻고, 실패하면 nullptr을 받아 안전하게 분기한다.</text>
+  <rect x="1010" y="776" width="285" height="42" rx="12" fill="#1e293b" stroke="#475569"/>
+  <text x="1152" y="803" text-anchor="middle" class="code" fill="#f8fafc">객체 복사 X · 타입 검사 O</text>
+</svg>
