@@ -145,7 +145,6 @@
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Goal.h" />
     <ClInclude Include="InputDevice.h" />
-    <ClInclude Include="main.h" />
     <ClInclude Include="Monster.h" />
     <ClInclude Include="Object.h" />
     <ClInclude Include="Pawn.h" />
