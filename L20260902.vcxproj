@@ -71,6 +71,10 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\work\L20260903\SDL2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\work\L20260903\x64;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -125,6 +129,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="Floor.cpp" />
     <ClCompile Include="Goal.cpp" />
@@ -141,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="Floor.h" />
     <ClInclude Include="Goal.h" />
