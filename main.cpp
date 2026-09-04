@@ -21,7 +21,7 @@ int SDL_main(int argc, char* argv[])
 
 	SDL_Window* MyWindow = SDL_CreateWindow("Game", 100, 100, 800, 600, SDL_WINDOW_SHOWN);
 
-	SDL_Renderer* MyRenderer = SDL_CreateRenderer(MyWindow, -1, SDL_RENDERER_ACCELERATED);
+	SDL_Renderer* MyRenderer =  SDL_CreateRenderer(MyWindow, -1, SDL_RENDERER_ACCELERATED);
 
 	SDL_Event MyEvent;
 
@@ -45,10 +45,20 @@ int SDL_main(int argc, char* argv[])
 		SDL_SetRenderDrawColor(MyRenderer, 0, 0, 0, 0);
 		SDL_RenderClear(MyRenderer);
 
-		SDL_Rect MyRect{ 0, 0, 0, 0 };
-		SDL_SetRenderDrawColor(MyRenderer, 255, 0, 0, 0);
+		for (int i = 0; i < 20000; ++i)
+		{
+			SDL_Rect MyRect{ rand() % 800, rand() % 600, rand() % 400, rand() % 400 };
+			SDL_SetRenderDrawColor(MyRenderer, rand() % 256, rand() % 256, rand() % 256, 0);
 
-		SDL_RenderDrawRect(MyRenderer, &MyRect);
+			if (rand() % 2 == 0)
+			{
+				SDL_RenderDrawRect(MyRenderer, &MyRect);
+			}
+			else
+			{
+				SDL_RenderFillRect(MyRenderer, &MyRect);
+			}
+		}
 
 		SDL_RenderPresent(MyRenderer);
 	}
